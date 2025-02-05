@@ -15,7 +15,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void create(Client client) {
-    final int clientId = CLIENT_ID_HOLDER.incrementAndGet();
+    final int clientId = CLIENT_ID_HOLDER.getAndIncrement();
     client.setId(clientId);
     CLIENT_MAP.put(clientId,client);
     }
