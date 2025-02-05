@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "e4f30c73-e23b-4310-94a1-62b65e99167e",
+		"name": "PoolTEst",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "41786352"
+	},
+	"item": [
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "POST addClient",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Sharipov Azat Ainurovich\",\r\n    \"phone\": \"234\",\r\n    \"email\": \"azatteam\"\r\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v0/pool/client/add"
+					},
+					"response": []
+				},
+				{
+					"name": "POST updateClient",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Idar21312\",\r\n    \"phone\": \"2343213\",\r\n    \"email\": \"azatteam1231\"\r\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v0/pool/client/update"
+					},
+					"response": []
+				},
+				{
+					"name": "GET getClients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v0/pool/client/all"
+					},
+					"response": []
+				},
+				{
+					"name": "GET getClient",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "id: 0",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v0/pool/client/get?id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v0",
+								"pool",
+								"client",
+								"get"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cross",
+			"item": [
+				{
+					"name": "Get SerchName",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Sharipov Azat Ainurovich\",\r\n    \"date\": \"02.05.2025\"\r\n}    ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v0/pool/client/search"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "GET getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v0/pool/timetable/all?date=02.05.2025",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v0",
+								"pool",
+								"timetable",
+								"all"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "02.05.2025"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET getAvailable",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v0/pool/timetable/available?date=02.05.2025",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v0",
+								"pool",
+								"timetable",
+								"available"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "02.05.2025"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST reserve",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clientId\": 1,\r\n    \"datetime\": \"12.00,02.05.2025\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v0/pool/timetable/reserve"
+					},
+					"response": []
+				},
+				{
+					"name": "POST reserve Multi",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clientId\": 2,\r\n    \"datetime\": \"9.00-12.00,02.05.2025\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v0/pool/timetable/reserve"
+					},
+					"response": []
+				},
+				{
+					"name": "GET cancel",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clientId\": 1,\r\n    \"orderId\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v0/pool/timetable/cancel"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

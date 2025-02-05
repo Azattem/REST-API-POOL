@@ -53,13 +53,14 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public List<Order> readAllByClientId(int clientId) {
-        List<Order> list = new ArrayList<>();
-        for (Order order : ORDER_MAP.values()) {
+    public boolean containsClientIdByDate(int clientId,String date) {
+        List<Order> list = readAllByDate(date);
+        for (Order order : list) {
             if(order.getClientId()==clientId){
-                list.add(order);
+                return true;
             }
         }
-        return list;
+        return false;
     }
+
 }

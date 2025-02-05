@@ -14,5 +14,5 @@ void create(Order order);
 boolean delete(String orderId,int clientId);
 List<Order> readAllByDate(String date);
 List<Order> readAllByTimeDate(String time,String date);
-List<Order> readAllByClientId(int clientId);
+boolean containsClientIdByDate(int clientId,String date);
 }

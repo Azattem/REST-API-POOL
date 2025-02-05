@@ -164,30 +164,36 @@ public record OrderHandlersContainer(OrderService orderService) implements Handl
                 String datetime = requestData.split("\"datetime\": \"")[1].split("\"")[0];
                 String time = datetime.split(".00")[0].trim();
                 String date = datetime.split(",")[1].trim();
-                if (orderService.readAllByTimeDate(time, date).size() < 10) {
-                    if (Integer.parseInt(time) >= workCalendar.getStartWorkHours(date) && Integer.parseInt(time) <= workCalendar.getEndWorkHours(date)) {
-                        orderService.create(new Order(date, time, Integer.parseInt(clientId.trim())));
+                //проверка на наличие повторяющийся записи
+                if(!orderService.containsClientIdByDate(Integer.parseInt(clientId.trim()),date)) {
+                    if (orderService.readAllByTimeDate(time, date).size() < 10) {
+                        if (Integer.parseInt(time) >= workCalendar.getStartWorkHours(date) && Integer.parseInt(time) <= workCalendar.getEndWorkHours(date)) {
+                            orderService.create(new Order(date, time, Integer.parseInt(clientId.trim())));
+                        }
                     }
                 }
-            }else{
+            }else {
                 String clientId = requestData.split("\"clientId\": ")[1].split(",")[0];
                 String datetime = requestData.split("\"datetime\": \"")[1].split("\"")[0];
                 String timeStart = datetime.split(".00")[0].trim();
                 String timeEnd = datetime.split("-")[1].split(".00")[0].trim();
                 String date = datetime.split(",")[1].trim();
-                //flag для проверки доступности мест на всю длительность резервации
-                boolean flag = true;
-                for (int i = Integer.parseInt(timeStart); i <= Integer.parseInt(timeEnd); i++) {
-                    if (!(orderService.readAllByTimeDate(String.valueOf(i), date).size() < 10)){
-                    flag =false;
-                    }
-                    if (!(Integer.parseInt(String.valueOf(i)) >= workCalendar.getStartWorkHours(date) && Integer.parseInt(String.valueOf(i)) <= workCalendar.getEndWorkHours(date))){
-                    flag = false;
-                    }
-                }
-                if(flag) {
+                //проверка на наличие повторяющийся записи
+                if(!orderService.containsClientIdByDate(Integer.parseInt(clientId.trim()),date)){
+                    //flag для проверки доступности мест на всю длительность резервации
+                    boolean flag = true;
                     for (int i = Integer.parseInt(timeStart); i <= Integer.parseInt(timeEnd); i++) {
-                        orderService.create(new Order(date, String.valueOf(i), Integer.parseInt(clientId.trim())));
+                        if (!(orderService.readAllByTimeDate(String.valueOf(i), date).size() < 10)) {
+                            flag = false;
+                        }
+                        if (!(Integer.parseInt(String.valueOf(i)) >= workCalendar.getStartWorkHours(date) && Integer.parseInt(String.valueOf(i)) <= workCalendar.getEndWorkHours(date))) {
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        for (int i = Integer.parseInt(timeStart); i <= Integer.parseInt(timeEnd); i++) {
+                            orderService.create(new Order(date, String.valueOf(i), Integer.parseInt(clientId.trim())));
+                        }
                     }
                 }
 
