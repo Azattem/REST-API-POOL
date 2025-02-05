@@ -50,9 +50,9 @@ public record ClientHandlersContainer(ClientService clientService) {
         //Метод генерует и отправялет response на основании данных request
         private void handleResponse(HttpExchange httpExchange, String requestData) throws IOException {
             String response = null;
-            String name = requestData.split("\"name\": ")[1].split(",")[0];
-            String phone = requestData.split("\"phone\": ")[1].split(",")[0];
-            String email = requestData.split("\"email\": ")[1].split("\n")[0];
+            String name = requestData.split("\"name\": \"")[1].split("\",")[0];
+            String phone = requestData.split("\"phone\": \"")[1].split("\",")[0];
+            String email = requestData.split("\"email\": \"")[1].split("\"\n")[0];
             clientService.create(new Client(name, phone, email));
             OutputStream outputStream = httpExchange.getResponseBody();
             httpExchange.sendResponseHeaders(200, 0);
@@ -92,7 +92,7 @@ public record ClientHandlersContainer(ClientService clientService) {
             for (Client client : list) {
                 String s = "{[\n" +
                         "    \"id\": " + client.getId() + ",\n" +
-                        "    \"name\": " + client.getName() + ",\n" +
+                        "    \"name\": \"" + client.getName() + "\"\n" +
                         "]}\n";
                 clientList.append(s);
             }
@@ -130,9 +130,9 @@ public record ClientHandlersContainer(ClientService clientService) {
             Client client = clientService.read(id);
             String response = "{\n" +
                     "    \"id\": " + client.getId() + ",\n" +
-                    "    \"name\": " + client.getName() + ",\n" +
-                    "    \"phone\": " + client.getPhone() + ",\n" +
-                    "    \"email\": " + client.getEmail() + "\n" +
+                    "    \"name\": \"" + client.getName() + "\",\n" +
+                    "    \"phone\": \"" + client.getPhone() + "\",\n" +
+                    "    \"email\": \"" + client.getEmail() + "\"\n" +
                     "}";
             OutputStream outputStream = httpExchange.getResponseBody();
             httpExchange.sendResponseHeaders(200, response.length());
@@ -170,10 +170,10 @@ public record ClientHandlersContainer(ClientService clientService) {
         //Метод генерует и отправялет response на основании данных request
         private void handleResponse(HttpExchange httpExchange, String requestData) throws IOException {
             String response = null;
-            String id = requestData.split("\"id\": ")[1].split("\n")[0].trim();
-            String name = requestData.split("\"name\": ")[1].split(",")[0];
-            String phone = requestData.split("\"phone\": ")[1].split(",")[0];
-            String email = requestData.split("\"email\": ")[1].split("\n")[0];
+            String id = requestData.split("\"id\": ")[1].split(",")[0].trim();
+            String name = requestData.split("\"name\": \"")[1].split("\",")[0];
+            String phone = requestData.split("\"phone\": \"")[1].split("\",")[0];
+            String email = requestData.split("\"email\": \"")[1].split("\"\n")[0];
             clientService.update(new Client(name, phone, email), Integer.parseInt(id));
             OutputStream outputStream = httpExchange.getResponseBody();
             httpExchange.sendResponseHeaders(200, 0);

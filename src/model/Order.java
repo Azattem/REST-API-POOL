@@ -6,8 +6,7 @@ private String date;
 private String time;
 private int clientId;
     public Order(){}
-    public Order(String id,String date,String time,int clientId){
-    this.orderId = id;
+    public Order(String date,String time,int clientId){
     this.date = date;
     this.time = time;
     this.clientId = clientId;
@@ -30,7 +29,7 @@ private int clientId;
     }
 
     public void setOrderId(int orderId) {
-        this.orderId = orderId;
+        this.orderId = orderId+"";
     }
 
     public void setDate(String date) {

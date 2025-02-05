@@ -7,11 +7,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
 //Затычка для базы данных Заказов
 public class OrderServiceImpl implements OrderService{
+    private static final AtomicInteger ORDER_ID_HOLDER = new AtomicInteger();
     private static final Map<String,Order> ORDER_MAP = new HashMap<>();
     @Override
     public void create(Order order) {
+    order.setOrderId(ORDER_ID_HOLDER.getAndIncrement());
     ORDER_MAP.put(order.getOrderId(),order);
     }
 
