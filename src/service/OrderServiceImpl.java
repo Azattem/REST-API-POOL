@@ -1,6 +1,5 @@
 package service;
 
-import model.Client;
 import model.Order;
 
 import java.util.ArrayList;
