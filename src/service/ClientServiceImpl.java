@@ -39,4 +39,15 @@ public class ClientServiceImpl implements ClientService {
         }
         return false;
     }
+
+    @Override
+    public List<Client> readAllByName(String name) {
+        List<Client> list = new ArrayList<>();
+        for (Map.Entry<Integer,Client> e : CLIENT_MAP.entrySet()) {
+        if(name.trim().equals(e.getValue().getName())){
+        list.add(e.getValue());
+        }
+        }
+        return list;
+    }
 }

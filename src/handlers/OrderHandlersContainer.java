@@ -17,7 +17,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public record OrderHandlersContainer(OrderService orderService) {
+public record OrderHandlersContainer(OrderService orderService) implements HandlersContainer{
     public static final int workStart = 9;
     public static final int workEnds = 17;
     public static final String rootPath = "/api/v0/pool/timetable";
@@ -210,5 +210,7 @@ public record OrderHandlersContainer(OrderService orderService) {
             outputStream.close();
         }
     }
+    //Handler для Get search
+
 
 }

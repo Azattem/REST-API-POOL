@@ -13,7 +13,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 //вынесенная логика и добавлние HttpHandler к серверу для обработки клиентов
-public record ClientHandlersContainer(ClientService clientService) {
+public record ClientHandlersContainer(ClientService clientService) implements HandlersContainer{
     public static final String rootPath = "/api/v0/pool/client";
     public void addHandlers(HttpServer httpServer) {
         httpServer.createContext(rootPath+"/all", new GetClientsHandler());
