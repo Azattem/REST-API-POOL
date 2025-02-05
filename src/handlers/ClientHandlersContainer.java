@@ -12,13 +12,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.List;
 
-//вынесенная логика и добавлние HttpHandler к серверу
+//вынесенная логика и добавлние HttpHandler к серверу для обработки клиентов
 public record ClientHandlersContainer(ClientService clientService) {
+    public static final String rootPath = "/api/v0/pool/client";
     public void addHandlers(HttpServer httpServer) {
-        httpServer.createContext("/api/v0/pool/client/all", new GetClientsHandler());
-        httpServer.createContext("/api/v0/pool/client/add", new AddClientHandler());
-        httpServer.createContext("/api/v0/pool/client/get", new GetClientHandler());
-        httpServer.createContext("/api/v0/pool/client/update", new UpdateClientHandler());
+        httpServer.createContext(rootPath+"/all", new GetClientsHandler());
+        httpServer.createContext(rootPath+"/add", new AddClientHandler());
+        httpServer.createContext(rootPath+"/get", new GetClientHandler());
+        httpServer.createContext(rootPath+"/update", new UpdateClientHandler());
     }
 
     //Handler для POST addClient
