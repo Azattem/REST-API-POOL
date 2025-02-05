@@ -20,12 +20,12 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public boolean delete(Order order, int clientId) {
-        if(ORDER_MAP.containsKey(order.getOrderId())){
-        if(ORDER_MAP.get(order.getOrderId()).getClientId()==clientId){
-        ORDER_MAP.remove(order.getOrderId());
-        return true;
-        }
+    public boolean delete(String orderId, int clientId) {
+        if(ORDER_MAP.containsKey(orderId)){
+            if(ORDER_MAP.get(orderId).getClientId()==clientId){
+                ORDER_MAP.remove(orderId);
+                return true;
+            }
         }
         return false;
     }

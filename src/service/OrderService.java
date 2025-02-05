@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public interface OrderService
 {
 void create(Order order);
-boolean delete(Order order,int clientId);
+boolean delete(String orderId,int clientId);
 List<Order> readAllByDate(String date);
 List<Order> readAllByTimeDate(String time,String date);
 List<Order> readAllByClientId(int clientId);
