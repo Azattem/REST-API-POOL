@@ -1,5 +1,6 @@
 package handlers;
 
+import Utils.WorkCalendar;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -18,8 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public record OrderHandlersContainer(OrderService orderService) implements HandlersContainer{
-    public static final int workStart = 9;
-    public static final int workEnds = 17;
+    public static final WorkCalendar workCalendar = new WorkCalendar();
     public static final String rootPath = "/api/v0/pool/timetable";
     public void addHandlers(HttpServer httpServer){
         httpServer.createContext(rootPath+"/reserve", new AddOrderHandler());
@@ -164,7 +164,7 @@ public record OrderHandlersContainer(OrderService orderService) implements Handl
             String time = datetime.split(".00")[0].trim();
             String date = datetime.split(",")[1].trim();
             if(orderService.readAllByTimeDate(time,date).size()<10){
-            if(Integer.parseInt(time)>=workStart&&Integer.parseInt(time)<=workEnds) {
+            if(Integer.parseInt(time)>=workCalendar.getStartWorkHours(date)&&Integer.parseInt(time)<=workCalendar.getEndWorkHours(date)) {
             orderService.create(new Order(date, time, Integer.parseInt(clientId.trim())));
             }
             }
