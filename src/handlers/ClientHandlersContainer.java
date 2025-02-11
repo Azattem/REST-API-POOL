@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import model.Client;
 import service.ClientService;
+import service.CustomService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,40 +24,25 @@ public record ClientHandlersContainer(ClientService clientService) implements Ha
     }
 
     //Handler для POST addClient
-    private class AddClientHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange httpExchange) throws IOException {
-            String requestData = null;
-            if ("POST".equals(httpExchange.getRequestMethod())) {
-                requestData = handleRequest(httpExchange);
-                handleResponse(httpExchange, requestData);
-            }
-
-        }
-
-        //Метод преобразует request в String
-        private String handleRequest(HttpExchange httpExchange) throws IOException {
-            InputStreamReader inputStreamReader = new InputStreamReader(httpExchange.getRequestBody());
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            StringBuilder httpRequest = new StringBuilder();
-            while (bufferedReader.ready()) {
-                httpRequest.append((char) bufferedReader.read());
-            }
-            bufferedReader.close();
-            inputStreamReader.close();
-            return httpRequest.toString();
-        }
-
+    private class AddClientHandler extends CustomService {
         //Метод генерует и отправялет response на основании данных request
-        private void handleResponse(HttpExchange httpExchange, String requestData) throws IOException {
-            String response = null;
+        public String handleResponse(HttpExchange httpExchange, String requestData) {
+            String response = "";
             String name = requestData.split("\"name\": \"")[1].split("\",")[0];
             String phone = requestData.split("\"phone\": \"")[1].split("\",")[0];
             String email = requestData.split("\"email\": \"")[1].split("\"\n")[0];
             clientService.create(new Client(name, phone, email));
-            OutputStream outputStream = httpExchange.getResponseBody();
-            httpExchange.sendResponseHeaders(200, 0);
-            outputStream.close();
+            return response;
+        }
+
+        @Override
+        public String handlePostRequest(HttpExchange httpExchange) throws IOException {
+            return super.getInput(httpExchange);
+        }
+
+        @Override
+        public String handleGetRequest(HttpExchange httpExchange) throws IOException {
+            throw new IOException();
         }
     }
 
@@ -145,11 +131,15 @@ public record ClientHandlersContainer(ClientService clientService) implements Ha
     //Handler для POST updateClient
     private class UpdateClientHandler implements HttpHandler {
         @Override
-        public void handle(HttpExchange httpExchange) throws IOException {
+        public void handle(HttpExchange httpExchange) {
             String requestData = null;
-            if ("POST".equals(httpExchange.getRequestMethod())) {
-                requestData = handleRequest(httpExchange);
-                handleResponse(httpExchange, requestData);
+            try {
+                if ("POST".equals(httpExchange.getRequestMethod())) {
+                    requestData = handleRequest(httpExchange);
+                    handleResponse(httpExchange, requestData);
+                }
+            }catch (IOException e){
+                System.out.println(e.fillInStackTrace());
             }
 
         }
